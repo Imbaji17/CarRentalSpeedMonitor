@@ -1,139 +1,122 @@
-# User Explorer App
+# User Explorer
 
-A modern Android application that demonstrates clean architecture, modern Android development practices, and Jetpack Compose UI. The app allows users to browse through a list of users and view their detailed information.
+A modern Android application built with Kotlin and Jetpack Compose that allows users to explore and manage user data.
 
-## Architecture
+## 🛠 Technologies Used
 
-The project follows Clean Architecture principles with a modular structure:
-- `app`: Main application module
-- `core`: Core functionality
-  - `domain`: Business logic and interfaces
-  - `data`: Data layer implementation
-- `feature`: Feature modules (users)
+- **Kotlin** - Primary programming language
+- **Kotlin Flow** - Reactive streams for asynchronous data handling
+  - StateFlow - State holder with value
+  - SharedFlow - Hot stream of events
+  - Flow operators - map, filter, combine, etc.
+- **Jetpack Compose** - Modern Android UI toolkit
+- **Material 3** - Material Design components
+- **Koin** - Dependency injection framework
+- **Kotlinx Serialization** - JSON serialization
+- **Android Architecture Components**
+  - Navigation Compose
+  - Lifecycle
+  - ViewModel
+- **Coroutines** - Asynchronous programming
+- **Clean Architecture** - Project structure and organization
 
-## Technologies & Tools
+## 📱 Screenshots
 
-### Core
-- **Language**: Kotlin 1.9.10
-- **Minimum SDK**: 24
-- **Target SDK**: 35
-- **Build System**: Gradle with Kotlin DSL
+| Users List | User Details | Error State |
+|------------|--------------|-------------|
+| <img src="screenshots/UsersList.png" width="250" alt="Users List Screen"/> | <img src="screenshots/UserDetail.png" width="250" alt="User Details Screen"/> | <img src="screenshots/UsersListError.png" width="250" alt="Error State"/> |
+| List of users with search functionality | Detailed user information view | Error handling with retry option |
 
-### UI
-- **Jetpack Compose**: 2023.10.01 (BOM)
-- **Material Design 3**
-- **Coil**: 2.5.0 (Image loading)
-- **Navigation Compose**: 2.7.7
+## 🏗 Architecture
 
-### Architecture Components
-- **ViewModel**: Lifecycle-aware data holder
-- **StateFlow**: Reactive state management
-- **Coroutines**: Asynchronous programming
-- **Navigation**: Screen navigation and argument passing
-
-### Dependency Injection
-- **Koin**: 3.3.3
-- **Koin Compose**: 3.4.3
-
-### Networking
-- **Retrofit**: 2.9.0
-- **OkHttp**: 4.10.0
-- **KotlinX Serialization**: 1.4.1
-
-### Testing
-- **JUnit**: 4.13.2
-- **MockK**: 1.13.9
-- **Coroutines Test**: 1.6.4
-- **Compose UI Testing**
-- **Espresso**: 3.5.1
-
-## Project Structure
+The project follows Clean Architecture principles and is organized into the following modules:
 
 ```
-├── app/                          # Application module
-├── core/                         # Core modules
-│   ├── data/                    # Data layer
-│   └── domain/                  # Domain layer
-└── feature/                      # Feature modules
-    └── users/                   # Users feature
+app/
+├── core/
+│   ├── data/         # Data layer (repositories, data sources)
+│   └── domain/       # Domain layer (use cases, entities)
+├── feature/
+│   └── users/        # User feature module
+└── app/              # Application module (UI, navigation)
 ```
 
-## Key Features
+### Architecture Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                           Presentation Layer                            │
+│                                                                         │
+│  ┌─────────────┐    ┌─────────────┐    ┌───────────────────────────┐   │
+│  │   Screens   │    │ ViewModels  │    │      Navigation           │   │
+│  │  (Compose)  │◄───┤  (StateFlow)│◄───┤    (Navigation Compose)    │   │
+│  └─────────────┘    └─────────────┘    └───────────────────────────┘   │
+└───────────────────────────┬─────────────────────────────────────────────┘
+                            │
+┌───────────────────────────▼─────────────────────────────────────────────┐
+│                           Domain Layer                                  │
+│                                                                         │
+│  ┌─────────────┐    ┌─────────────┐    ┌───────────────────────────┐   │
+│  │  Use Cases  │    │  Entities   │    │ Repository Interfaces     │   │
+│  │  (Flow)     │◄───┤  (Models)   │◄───┤    (Contracts)            │   │
+│  └─────────────┘    └─────────────┘    └───────────────────────────┘   │
+└───────────────────────────┬─────────────────────────────────────────────┘
+                            │
+┌───────────────────────────▼─────────────────────────────────────────────┐
+│                           Data Layer                                     │
+│                                                                         │
+│  ┌─────────────┐    ┌─────────────┐    ┌───────────────────────────┐   │
+│  │Repository   │    │ DataSource  │    │         DTOs              │   │
+│  │Implementation│◄───┤  (Remote)   │◄───┤    (Data Objects)        │   │
+│  └─────────────┘    └─────────────┘    └───────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────────┘
+
+Data Flow:
+1. UI triggers action in ViewModel
+2. ViewModel executes UseCase
+3. UseCase uses Repository
+4. Repository fetches data from DataSource
+5. Data flows back up through the layers
+6. UI updates via StateFlow
+```
+
+## 🚀 Features
+
+- Modern Material 3 UI design
 - Clean Architecture implementation
-- Modular project structure
-- Reactive state management
-- Modern UI with Jetpack Compose
-- Comprehensive test coverage
-- Type-safe navigation
-- Error handling
-- Image loading and caching
+- Dependency injection with Koin
+- Kotlin Coroutines for asynchronous operations
+- Jetpack Compose for UI
+- Navigation using Navigation Compose
 
-## Assumptions
-1. Network connectivity is required for the app to function
-2. User data structure remains consistent with the defined model
-3. API endpoints follow RESTful conventions
-4. Device has sufficient memory to handle image loading
-5. User permissions for internet access are granted
+## 🛠 Setup and Installation
 
-## Potential Improvements
-
-### Architecture & Code
-1. Add local data persistence using Room
-2. Implement offline-first architecture
-3. Add use cases layer in domain module
-4. Implement data caching strategy
-5. Add pagination for user list
-6. Implement retry mechanism for failed network requests
-
-### Features
-1. Add user search functionality
-2. Implement user filtering and sorting
-3. Add pull-to-refresh functionality
-4. Implement user data editing
-5. Add user favorites feature
-6. Implement dark/light theme switching
-
-### Testing
-1. Add integration tests
-2. Implement UI automation tests
-3. Add performance testing
-4. Implement screenshot testing
-5. Add API response mocking for testing
-6. Increase test coverage for edge cases
-
-### Performance
-1. Implement image caching strategy
-2. Add memory optimization for image loading
-3. Implement lazy loading for user list
-4. Add performance monitoring
-5. Optimize app startup time
-6. Implement proper memory management
-
-### User Experience
-1. Add loading animations
-2. Implement error state UI improvements
-3. Add gesture navigation
-4. Implement accessibility features
-5. Add user feedback mechanisms
-6. Improve error messages
-
-### Security
-1. Implement API key security
-2. Add certificate pinning
-3. Implement proper data encryption
-4. Add user data privacy features
-5. Implement secure storage for sensitive data
-6. Add security headers in API requests
-
-## Getting Started
-
-### Prerequisites
-- Android Studio Arctic Fox or later
-- JDK 11
-- Android SDK with minimum API 24
-
-### Setup
 1. Clone the repository
-2. Open project in Android Studio
-3. Sync project with Gradle files
-4. Run the app on an emulator or physical device
+2. Open the project in Android Studio
+3. Sync the project with Gradle files
+4. Run the application on an emulator or physical device
+
+## 📋 Requirements
+
+- Android Studio Hedgehog | 2023.1.1 or later
+- JDK 11
+- Android SDK 24+
+- Kotlin 1.9.0 or later
+
+## 🧪 Testing
+
+The project includes:
+- Unit tests using JUnit and MockK
+- UI tests using Espresso and Compose UI testing
+- Integration tests for repository and use cases
+
+## 🔄 Future Improvements
+
+1. **Feature Enhancements**
+   - Add user search functionality
+   - Add offline support
+
+2. **Architecture**
+   - Implement error handling strategy
+   - Add analytics tracking
+   - Implement proper logging system
