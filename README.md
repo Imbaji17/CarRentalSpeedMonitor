@@ -2,23 +2,33 @@
 
 A modern Android application built with Kotlin and Jetpack Compose that allows users to explore and manage user data.
 
+## 🎯 Project Overview
+
+This project demonstrates:
+- Clean Architecture implementation with MVI pattern
+- Modern Android development practices
+- SOLID principles adherence
+- Test-driven development approach
+- Scalable and maintainable codebase
+
 ## 🛠 Technologies Used
 
-- **Kotlin** - Primary programming language
-- **Kotlin Flow** - Reactive streams for asynchronous data handling
-  - StateFlow - State holder with value
-  - SharedFlow - Hot stream of events
-  - Flow operators - map, filter, combine, etc.
-- **Jetpack Compose** - Modern Android UI toolkit
-- **Material 3** - Material Design components
-- **Koin** - Dependency injection framework
-- **Kotlinx Serialization** - JSON serialization
+- **Kotlin**
+- **Kotlin Flow**
+- **Jetpack Compose**
+- **Material 3**
+- **Koin**
+- **Kotlinx Serialization**
 - **Android Architecture Components**
   - Navigation Compose
   - Lifecycle
   - ViewModel
-- **Coroutines** - Asynchronous programming
-- **Clean Architecture** - Project structure and organization
+- **Coroutines**
+- **Clean Architecture**
+- **MVI (Model-View-Intent)**
+- **Retrofit**
+- **Coil**
+- **MockK**
 
 ## 📱 Screenshots
 
@@ -29,7 +39,7 @@ A modern Android application built with Kotlin and Jetpack Compose that allows u
 
 ## 🏗 Architecture
 
-The project follows Clean Architecture principles and is organized into the following modules:
+The project follows Clean Architecture principles combined with MVI pattern and is organized into the following modules:
 
 ```
 app/
@@ -37,7 +47,7 @@ app/
 │   ├── data/         # Data layer (repositories, data sources)
 │   └── domain/       # Domain layer (use cases, entities)
 ├── feature/
-│   └── users/        # User feature module
+│   └── users/        # Different features (Here: users)
 └── app/              # Application module (UI, navigation)
 ```
 
@@ -45,70 +55,73 @@ app/
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                           Presentation Layer                            │
+│                           Presentation Layer (MVI)                      │
 │                                                                         │
-│  ┌─────────────┐    ┌─────────────┐    ┌───────────────────────────┐   │
-│  │   Screens   │    │ ViewModels  │    │      Navigation           │   │
-│  │  (Compose)  │◄───┤  (StateFlow)│◄───┤    (Navigation Compose)    │   │
-│  └─────────────┘    └─────────────┘    └───────────────────────────┘   │
+│  ┌─────────────┐    ┌─────────────┐    ┌───────────────────────────┐    │
+│  │   Screens   │    │  ViewModels │    │        Navigation         │    │
+│  │  (Compose)  │◄───┤ (StateFlow) │◄───┤    (Navigation Compose)   │    │
+│  └─────────────┘    └─────────────┘    └───────────────────────────┘    │
 └───────────────────────────┬─────────────────────────────────────────────┘
                             │
 ┌───────────────────────────▼─────────────────────────────────────────────┐
 │                           Domain Layer                                  │
 │                                                                         │
-│  ┌─────────────┐    ┌─────────────┐    ┌───────────────────────────┐   │
-│  │  Use Cases  │    │  Entities   │    │ Repository Interfaces     │   │
-│  │  (Flow)     │◄───┤  (Models)   │◄───┤    (Contracts)            │   │
-│  └─────────────┘    └─────────────┘    └───────────────────────────┘   │
+│  ┌─────────────┐    ┌─────────────┐    ┌───────────────────────────┐    │
+│  │  Use Cases  │    │  Entities   │    │ Repository Interfaces     │    │
+│  │  (Flow)     │◄───┤  (Models)   │◄───┤    (Contracts)            │    │
+│  └─────────────┘    └─────────────┘    └───────────────────────────┘    │
 └───────────────────────────┬─────────────────────────────────────────────┘
                             │
 ┌───────────────────────────▼─────────────────────────────────────────────┐
-│                           Data Layer                                     │
+│                           Data Layer                                    │
 │                                                                         │
-│  ┌─────────────┐    ┌─────────────┐    ┌───────────────────────────┐   │
-│  │Repository   │    │ DataSource  │    │         DTOs              │   │
-│  │Implementation│◄───┤  (Remote)   │◄───┤    (Data Objects)        │   │
-│  └─────────────┘    └─────────────┘    └───────────────────────────┘   │
+│  ┌─────────────┐    ┌─────────────┐    ┌───────────────────────────┐    │
+│  │Repository   │    │ DataSource  │    │         DTOs              │    │
+│  │   Impl      │◄───┤  (Remote)   │◄───┤     (Data Objects)        │    │
+│  └─────────────┘    └─────────────┘    └───────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────────┘
 
 Data Flow:
-1. UI triggers action in ViewModel
-2. ViewModel executes UseCase
-3. UseCase uses Repository
-4. Repository fetches data from DataSource
-5. Data flows back up through the layers
-6. UI updates via StateFlow
+1. UI triggers Intent in ViewModel
+2. ViewModel processes Intent and updates State
+3. ViewModel executes UseCase
+4. UseCase uses Repository
+5. Repository fetches data from DataSource
+6. Data flows back up through the layers
+7. UI updates via StateFlow
 ```
 
-## 🚀 Features
+## 🧪 Testing Strategy
 
-- Modern Material 3 UI design
-- Clean Architecture implementation
-- Dependency injection with Koin
-- Kotlin Coroutines for asynchronous operations
-- Jetpack Compose for UI
-- Navigation using Navigation Compose
+- **Unit Tests**
+  - ViewModels
+  - Use Cases
+  - Repositories
+  - Data Sources
 
-## 🛠 Setup and Installation
+- **Integration Tests**
+  - Repository implementations
+  - Data source implementations
 
-1. Clone the repository
-2. Open the project in Android Studio
-3. Sync the project with Gradle files
-4. Run the application on an emulator or physical device
+## 💡 Key Features
 
-## 📋 Requirements
+- **Clean Architecture**
+  - Clear separation of concerns
+  - Independent of frameworks
+  - Testable business logic
+  - Independent of UI
+  - Independent of data
 
-- Android Studio Hedgehog | 2023.1.1 or later
-- JDK 11
-- Android SDK 24+
-- Kotlin 1.9.0 or later
+- **MVI Pattern**
+  - Unidirectional data flow
+  - Predictable state management
+  - Easy to test
+  - Clear state representation
 
-## 🧪 Testing
-
-The project includes:
-- Unit tests using JUnit and MockK
-- UI tests using Espresso and Compose UI testing
-- Integration tests for repository and use cases
+- **Error Handling**
+  - Graceful error states
+  - Retry mechanisms
+  - User-friendly error messages
 
 ## 🔄 Future Improvements
 
@@ -120,3 +133,12 @@ The project includes:
    - Implement error handling strategy
    - Add analytics tracking
    - Implement proper logging system
+
+## 📝 Code Quality
+
+- **Clean Code Practices**
+  - SOLID Principles
+  - Meaningful naming
+  - Small functions
+  - DRY (Don't Repeat Yourself)
+  - KISS (Keep It Simple, Stupid)
